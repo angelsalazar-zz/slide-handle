@@ -1,0 +1,120 @@
+<link rel="import" href="../polymer/polymer.html">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
+<dom-module id="slide-handle">
+  <template>
+    <style>
+        :host {
+            display: block;
+        }
+        .slider{
+            position: relative;
+            width: 100%;
+            /*border: 1px solid red;*/
+        }
+        .slider  .zone{
+            /*border: 1px solid blue;*/
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+        .slider  .zone  .handle{
+            position: relative;
+            stroke: black;
+            stroke-width: 2;
+            fill: white;
+            padding:1px;
+            margin-left: -1.3%;
+        }
+        .slider  .zone  .handle-alt{
+            margin-bottom: 0px;
+        }
+        .slider  .zone  .handle-current{
+            margin-bottom: 0px;
+        }
+        .slider  .bar{
+            position: relative;
+            height: 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            width: 100%;
+            background-color: #cccccc;
+        }
+        .value-wrapper{
+            padding: 10px;
+        }
+    </style>
+    <div class="slider" id="slider">
+        <div class="zone">
+            <svg height="10" width="10" class="handle handle-alt" on-track="handleTrack">
+                <polygon points="1,1 9,1 5,9" />
+            </svg>
+        </div>
+        <div class="bar"></div>
+        <div class="zone">
+            <svg height="10" width="10" class="handle handle-current" on-track="handleTrack">
+                <polygon points="1,9 9,9 5,1" />
+            </svg>
+        </div>
+    </div>
+    <div class="value-wrapper">
+        <label>Slider value: <span>{{value}}</span></label>
+    </div>
+  </template>
+  <script>
+      Polymer({
+          is: 'slide-handle',
+          //JSON object containing the custom element's properties
+        properties: {
+            //Min value
+            min: {
+                type: Number,
+                value: 0,
+            },
+            //Max value
+            max: {
+                type: Number,
+                value: 100,
+            },
+            //Current Value
+            value: {
+                type: Number,
+                value: 0,
+                notify: true
+            }
+        },
+        observers: [
+            'valueChanged(value)'
+        
+        ],
+        handleDown: function(e) {
+            this._moveSlider(e);
+        },
+        handleTrack: function(e){
+            this._moveSlider(e);
+        },
+        ready: function(){
+            console.log("Slider ready");
+        },
+        _mapBoundaries: function(percent){
+            //Update the currentValue based on the percent of the range 
+           this.value = Math.round((this.max - this.min)*percent/100)+this.min;
+        },
+        valueChanged:function(value){
+            console.log("new => " + value);
+        },
+        _moveSlider:function(e){
+            var elementPos = $(e.currentTarget).parent().offset();
+            console.log(e);
+            var posX = e.detail.x - elementPos.left;
+            if(posX >= 0 && posX <= $(e.currentTarget).parent().width()){
+
+                $(e.currentTarget).css('left', posX+'px');
+                // $(this.$$("#sliderHandle")).css('left', posX+'px');
+                console.log(posX);
+                this._mapBoundaries(Math.round((posX*100)/$(e.currentTarget).parent().width()));
+            }
+        }
+
+    });
+  </script>
+</dom-module>
