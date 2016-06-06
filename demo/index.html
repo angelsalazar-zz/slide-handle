@@ -8,7 +8,9 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-
+    <link rel="import" href="../../slider-switch/slider-switch.html">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
     <link rel="import" href="../slide-handle.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -20,7 +22,11 @@
       <h3>Basic slide-handle Demo</h3>
       <demo-snippet>
         <template>
-          <slide-handle></slide-handle>
+          <slide-handle>
+              <slider-switch id="sone"></slider-switch>
+              <slider-switch id="stwo"></slider-switch>
+              <slider-switch id="sthree"></slider-switch>
+          </slide-handle>
         </template>
       </demo-snippet>
     </div>
