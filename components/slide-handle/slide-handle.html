@@ -1,0 +1,69 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../slider-switch/slider-switch.html">
+<dom-module id="slide-handle">
+  <template>
+    <style>
+        :host {
+            display: block;
+        }
+        .slider{
+            width: 100%;
+            position: relative;
+            height: 25px;
+        }
+        .slider .zone {
+            height:40%;
+            position: relative;
+        }
+        .slider .bar {
+            background-color: #cccccc;
+            height: 10%;
+            position: relative;
+            width: 100%;
+        }
+        
+    </style>
+    <div class="slider" id="slider">
+        <div class="zone">
+            <content></content>
+        </div>
+        <div class="bar"></div>
+        <div class="zone">
+            <slider-switch up></slider-switch>
+        </div>
+    </div>
+  </template>
+  <script>
+      Polymer({
+          is: 'slide-handle',
+          //JSON object containing the custom element's properties
+        properties: {
+            //Min value
+            min: {
+                type: Number,
+                value: 0,
+            },
+            //Max value
+            max: {
+                type: Number,
+                value: 100,
+            },
+            //Current Value
+            value: {
+                type: Number,
+                value: 0,
+                notify: true
+            }
+        },
+        ready: function(){
+            console.log("Slider ready");
+        },
+        _mapBoundaries: function(percent){
+            //Update the currentValue based on the percent of the range 
+           return Math.round((this.max - this.min)*percent/100)+this.min;
+        }
+        
+
+    });
+  </script>
+</dom-module>
